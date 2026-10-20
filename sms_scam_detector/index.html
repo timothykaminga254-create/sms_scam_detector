@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SMS Scam Detector</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <header>
+        <h1>🛡️ SMS Scam Detector</h1>
+        <p>Supervised learning (Multinomial Naive Bayes) running entirely in your browser</p>
+    </header>
+
+    <main>
+        <!-- Module: Classifier -->
+        <section class="card">
+            <h2>1. Check a message</h2>
+            <textarea id="smsInput" rows="5" placeholder="Paste an SMS message here..."></textarea>
+            <div class="row">
+                <button id="checkBtn">Analyze</button>
+                <button id="clearBtn" class="secondary">Clear</button>
+                <select id="examples">
+          <option value="">Load example...</option>
+          <option>URGENT! You have won a $1000 prize. Click http://claim-now.biz to collect your reward today!</option>
+          <option>Your bank account has been suspended. Verify your PIN at http://secure-bank-login.com immediately.</option>
+          <option>Hey, are we still meeting for lunch at 1pm?</option>
+          <option>Mum, I'll be home late tonight, don't wait up for dinner.</option>
+        </select>
+            </div>
+
+            <div id="result" class="result hidden">
+                <div id="verdict" class="verdict"></div>
+                <div class="bar">
+                    <div id="barFill"></div>
+                </div>
+                <p id="probText"></p>
+                <h3>Most influential words</h3>
+                <div id="topWords" class="chips"></div>
+                <div class="row feedback">
+                    <span>Was this prediction wrong? Teach the model:</span>
+                    <button id="markSpam" class="small danger">Mark as scam</button>
+                    <button id="markHam" class="small ok">Mark as safe</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Module: Evaluation -->
+        <section class="card">
+            <h2>2. Model performance</h2>
+            <div class="row">
+                <label>Test split: <span id="splitVal">20</span>%
+          <input type="range" id="splitRange" min="10" max="40" value="20" />
+        </label>
+                <button id="retrainBtn" class="secondary">Retrain</button>
+            </div>
+            <div id="metrics" class="metrics"></div>
+            <table id="confusion">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Predicted Safe</th>
+                        <th>Predicted Scam</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <p id="datasetInfo" class="muted"></p>
+        </section>
+
+        <!-- Module: Dataset -->
+        <section class="card">
+            <h2>3. Add your own training data</h2>
+            <textarea id="newText" rows="3" placeholder="Message text..."></textarea>
+            <div class="row">
+                <select id="newLabel">
+          <option value="spam">Scam</option>
+          <option value="ham">Safe</option>
+        </select>
+                <button id="addBtn">Add &amp; retrain</button>
+            </div>
+            <h3>Top scam indicators learned</h3>
+            <div id="spamWords" class="chips"></div>
+        </section>
+    </main>
+
+    <footer>Educational project. Small dataset, so results are for learning only.</footer>
+
+    <script src="model.js" onerror="console.warn('model.js not found - using built-in demo model')"></script>
+    <script src="predictor.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
